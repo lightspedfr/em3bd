@@ -20,10 +20,12 @@
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{width:100%;height:100%;background:#000;overflow:hidden}
     #A4k9R{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:none;background:#000}
+    #err{position:absolute;top:0;left:0;width:100%;height:auto;padding:8px;color:#f66;background:#200;font:12px monospace;white-space:pre-wrap;z-index:9999;display:none}
   /*]]>*/</style>
 </head>
 <body>
 <iframe id="A4k9R" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"></iframe>
+<div id="err"></div>
 
 <script>//<![CDATA[
 var EFFECTIVE_LOC=(function(){
@@ -60,6 +62,7 @@ if(navigator.serviceWorker){
 (function(){
 'use strict';
 var A4k9R=document.getElementById('A4k9R');
+var _errEl=document.getElementById('err');
 var controller=null,frame=null;
 var currentW=null;
 try{currentW=localStorage.getItem('wVr1');}catch(e){}
@@ -67,25 +70,44 @@ var _swReady=false;
 var _initLock=null;
 var _pendingNav=null;
 
+function log(){
+  try{console.log.apply(console,['[svg]'].concat([].slice.call(arguments)));}catch(e){}
+}
+function showErr(msg){
+  try{
+    _errEl.style.display='block';
+    _errEl.textContent=String(msg);
+  }catch(e){}
+  toParent('error',{message:String(msg)});
+}
 function toParent(type,extra){
   try{window.parent.postMessage(Object.assign({source:'e',type:'e:'+type},extra||{}),'*');}catch(e){}
 }
 
+log('bootstrap',{a762:a762,a764:a764,currentW:currentW});
+
 function _doInitController(){
   if(_initLock)return _initLock;
   _initLock=(async function(){
+    log('_doInitController start');
     controller=null;frame=null;
-    var Ctrl=window.dGFzazR6MTMzNw.Controller;
-    var cfg=window.dGFzazR6MTMzNw.config;
-    cfg.dGFzazQ=SW_ORIGIN+a764+'index-c7m2q5.js';
-    cfg.dGFza3o=SW_ORIGIN+a764+'function-4827316.wasm';
-    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+a764+'index-l3w5m9.js';
+    var Ctrl=window.dGFzazR6MTMzNw&&window.dGFzazR6MTMzNw.Controller;
+    var cfg=window.dGFzazR6MTMzNw&&window.dGFzazR6MTMzNw.config;
+    if(!Ctrl){throw new Error('dGFzazR6MTMzNw.Controller missing');}
+    if(!cfg){throw new Error('dGFzazR6MTMzNw.config missing');}
+    if(!window.L1bcTransport||!window.L1bcTransport.L1bcClient){throw new Error('L1bcTransport.L1bcClient missing');}
+    cfg.dGFzazQ=a762+a764+'index-c7m2q5.js';
+    cfg.dGFza3o=a762+a764+'function-4827316.wasm';
+    cfg.ZWR1Y2F0aW9u=a762+a764+'index-l3w5m9.js';
     cfg.prefix=a764+'bootstrap/assets';
+    log('cfg',cfg);
     var transport=new window.L1bcTransport.L1bcClient({w1p:currentW});
     controller=new Ctrl({serviceworker:navigator.serviceWorker.controller,transport:transport});
     await controller.wait();
+    log('controller ready');
     frame=controller.createFrame(a764);
     if(!frame)throw new Error('createFrame returned null');
+    log('frame created');
     var _Tap=window.$bWF0aGlp&&window.$bWF0aGlp.Tap;
     if(_Tap){
       var _nfn=null;
@@ -96,32 +118,48 @@ function _doInitController(){
         d.window.Function.prototype.toString=function(){try{return nv.call(this);}catch(e){return'function() { [native code] }';}};
       });
     }
-  })().finally(function(){_initLock=null;});
+  })().catch(function(er){
+    log('_doInitController error',er&&er.message);
+    showErr('init: '+(er&&er.message||er));
+    throw er;
+  }).finally(function(){_initLock=null;});
   return _initLock;
 }
 
 async function doNavigate(url){
   if(!url.startsWith('http'))url='https://'+url;
+  log('doNavigate',url,{currentW:currentW,hasFrame:!!frame});
   try{
     if(!navigator.serviceWorker.controller){
+      log('waiting for controllerchange');
       await new Promise(function(res){navigator.serviceWorker.addEventListener('controllerchange',res,{once:true});});
+      log('controllerchange fired');
     }
     if(!currentW){
       try{currentW=localStorage.getItem('wVr1');}catch(e){}
+      log('currentW from localStorage:',currentW);
     }
-    if(!currentW){_pendingNav=url;return;} // park until setW1p arrives
+    if(!currentW){
+      log('no currentW, parking nav');
+      _pendingNav=url;
+      return;
+    }
     if(!frame)await _doInitController();
+    log('calling frame.go',url);
     await frame.go(url);
+    log('frame.go done');
     A4k9R.style.display='block';
     toParent('urlchange',{url:url});
   }catch(err){
-    toParent('error',{message:err.message});
+    log('doNavigate error',err&&err.message);
+    showErr('nav: '+(err&&err.message||err));
   }
 }
 
 window.addEventListener('message',function(e){
   var d=e.data;
   if(!d||d.type!=='e:command')return;
+  log('command',d.action);
   if(d.action==='navigate'&&d.url)doNavigate(d.url);
   else if(d.action==='back'){try{A4k9R.contentWindow.history.back();}catch(er){}}
   else if(d.action==='forward'){try{A4k9R.contentWindow.history.forward();}catch(er){}}
@@ -130,10 +168,11 @@ window.addEventListener('message',function(e){
     var changed=(d.w1p!==currentW);
     currentW=d.w1p;
     try{localStorage.setItem('wVr1',currentW);}catch(e){}
+    log('setW1p',currentW,'changed',changed);
     if(changed){controller=null;frame=null;_initLock=null;}
-    if(_swReady)_doInitController().then(function(){
+    _doInitController().then(function(){
       if(_pendingNav){var u=_pendingNav;_pendingNav=null;doNavigate(u);}
-    }).catch(function(er){toParent('error',{message:er.message});});
+    }).catch(function(er){log('setW1p init error',er&&er.message);});
   }
 });
 
@@ -187,9 +226,10 @@ window.addEventListener('message',function(e){
     w1Url=decodeQueryValue(params.get('w1'));
   }
 
+  log('query params',{action:action,goUrl:goUrl,w1Url:w1Url,search:EFFECTIVE_LOC.search});
+
   if(!action&&!goUrl&&!w1Url)return;
 
-  // Seed the X4b4k URL before anything else runs.
   if(w1Url){
     var changed=(w1Url!==currentW);
     currentW=w1Url;
@@ -198,8 +238,10 @@ window.addEventListener('message',function(e){
   }
 
   function fire(){
-    if(w1Url&&_swReady){
-      _doInitController().catch(function(er){toParent('error',{message:er.message});});
+    log('fire',{w1Url:w1Url,goUrl:goUrl,action:action,_swReady:_swReady});
+    // Always try to init if we have a w1 OR we need a frame for navigation.
+    if(w1Url||goUrl){
+      _doInitController().catch(function(er){log('fire init error',er&&er.message);});
     }
     if(goUrl){
       doNavigate(goUrl);
@@ -212,7 +254,6 @@ window.addEventListener('message',function(e){
     }
   }
 
-  // Wait for the parent's "ready" signal (or a timeout) before firing.
   var done=false;
   function onMsg(e){
     var d=e.data;
@@ -229,16 +270,23 @@ window.addEventListener('message',function(e){
 
 (async function preInit(){
   try{
-    if(!navigator.serviceWorker)return;
+    if(!navigator.serviceWorker){log('no serviceWorker');return;}
+    log('preInit: registering sw');
     await navigator.serviceWorker.register(a762+a764+'index-n6q3m5.js',{scope:a764,updateViaCache:'none'});
+    log('preInit: sw registered');
     if(!navigator.serviceWorker.controller){
+      log('preInit: waiting for controller');
       await new Promise(function(res){navigator.serviceWorker.addEventListener('controllerchange',res,{once:true});});
+      log('preInit: controller ready');
+    }else{
+      log('preInit: controller already set');
     }
     _swReady=true;
     if(currentW)await _doInitController();
     toParent('ready');
   }catch(e){
-    toParent('error',{message:e.message});
+    log('preInit error',e&&e.message);
+    showErr('preInit: '+(e&&e.message||e));
   }
 })();
 })();
