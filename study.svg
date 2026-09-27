@@ -61,7 +61,8 @@ if(navigator.serviceWorker){
 'use strict';
 var A4k9R=document.getElementById('A4k9R');
 var controller=null,frame=null;
-var currentW=localStorage.getItem('wVr1');
+var currentW=null;
+try{currentW=localStorage.getItem('wVr1');}catch(e){}
 var _swReady=false;
 var _initLock=null;
 var _pendingNav=null;
@@ -105,6 +106,9 @@ async function doNavigate(url){
     if(!navigator.serviceWorker.controller){
       await new Promise(function(res){navigator.serviceWorker.addEventListener('controllerchange',res,{once:true});});
     }
+    if(!currentW){
+      try{currentW=localStorage.getItem('wVr1');}catch(e){}
+    }
     if(!currentW){_pendingNav=url;return;} // park until setW1p arrives
     if(!frame)await _doInitController();
     await frame.go(url);
@@ -125,6 +129,7 @@ window.addEventListener('message',function(e){
   else if(d.action==='setW1p'&&d.w1p){
     var changed=(d.w1p!==currentW);
     currentW=d.w1p;
+    try{localStorage.setItem('wVr1',currentW);}catch(e){}
     if(changed){controller=null;frame=null;_initLock=null;}
     if(_swReady)_doInitController().then(function(){
       if(_pendingNav){var u=_pendingNav;_pendingNav=null;doNavigate(u);}
@@ -134,7 +139,16 @@ window.addEventListener('message',function(e){
 
 /* ---- query parameter handling ---- */
 (function(){
-  var params=new URLSearchParams(location.search);
+  var params;
+  try{
+    params=new URLSearchParams(EFFECTIVE_LOC.search);
+  }catch(e){
+    try{
+      params=new URLSearchParams(location.search);
+    }catch(e2){
+      params=new URLSearchParams('');
+    }
+  }
   var action=null,goUrl=null,w1Url=null;
 
   function decodeQueryValue(raw){
