@@ -95,7 +95,7 @@ function _doInitController(){
     controller=new Ctrl({serviceworker:navigator.serviceWorker.controller,transport:transport});
     await controller.wait();
     log('controller ready');
-    frame=controller.createFrame(a764);
+    frame=controller.createFrame(A4k9R);
     if(!frame)throw new Error('createFrame returned null');
     log('frame created');
     var _Tap=window.$bWF0aGlp&&window.$bWF0aGlp.Tap;
