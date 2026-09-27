@@ -19,11 +19,11 @@
   <style>/*<![CDATA[*/
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{width:100%;height:100%;background:#000;overflow:hidden}
-    #pf{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:none;background:#000}
+    #A4k9R{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:none;background:#000}
   /*]]>*/</style>
 </head>
 <body>
-<iframe id="pf" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"></iframe>
+<iframe id="A4k9R" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"></iframe>
 
 <script>//<![CDATA[
 var EFFECTIVE_LOC=(function(){
@@ -31,11 +31,11 @@ var EFFECTIVE_LOC=(function(){
   try{if(window.parent&&window.parent!==window)return window.parent.location;}catch(e){}
   return location;
 })();
-var SW_ORIGIN=EFFECTIVE_LOC.origin;
-var BASE_PATH=EFFECTIVE_LOC.pathname.replace(/[^\/]*$/,'');
+var A4k9R=EFFECTIVE_LOC.origin;
+var A4k9R=EFFECTIVE_LOC.pathname.replace(/[^\/]*$/,'');
 
 if(navigator.serviceWorker){
-  navigator.serviceWorker.register(SW_ORIGIN+BASE_PATH+'index-n6q3m5.js',{scope:BASE_PATH,updateViaCache:'none'}).catch(function(){});
+  navigator.serviceWorker.register(A4k9R+A4k9R+'index-n6q3m5.js',{scope:A4k9R,updateViaCache:'none'}).catch(function(){});
 }
 //]]></script>
 <script src=".assets/index-c7m2q5.js"></script>
@@ -59,7 +59,7 @@ if(navigator.serviceWorker){
 <script>//<![CDATA[
 (function(){
 'use strict';
-var pf=document.getElementById('pf');
+var A4k9R=document.getElementById('A4k9R');
 var controller=null,frame=null;
 var currentW=localStorage.getItem('wVr1');
 var _swReady=false;
@@ -76,14 +76,14 @@ function _doInitController(){
     controller=null;frame=null;
     var Ctrl=window.dGFzazR6MTMzNw.Controller;
     var cfg=window.dGFzazR6MTMzNw.config;
-    cfg.dGFzazQ=SW_ORIGIN+BASE_PATH+'.assets/index-c7m2q5.js';
-    cfg.dGFza3o=SW_ORIGIN+BASE_PATH+'.assets/function-4827316.wasm';
-    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+BASE_PATH+'.assets/index-l3w5m9.js';
-    cfg.prefix=BASE_PATH+'bootstrap/assets';
+    cfg.dGFzazQ=SW_ORIGIN+A4k9R+'.assets/index-c7m2q5.js';
+    cfg.dGFza3o=SW_ORIGIN+A4k9R+'.assets/function-4827316.wasm';
+    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+A4k9R+'.assets/index-l3w5m9.js';
+    cfg.prefix=A4k9R+'bootstrap/assets';
     var transport=new window.L1bcTransport.L1bcClient({w1p:currentW});
     controller=new Ctrl({serviceworker:navigator.serviceWorker.controller,transport:transport});
     await controller.wait();
-    frame=controller.createFrame(pf);
+    frame=controller.createFrame(A4k9R);
     if(!frame)throw new Error('createFrame returned null');
     var _Tap=window.$bWF0aGlp&&window.$bWF0aGlp.Tap;
     if(_Tap){
@@ -108,7 +108,7 @@ async function doNavigate(url){
     if(!currentW){_pendingNav=url;return;} // park until setW1p arrives
     if(!frame)await _doInitController();
     await frame.go(url);
-    pf.style.display='block';
+    A4k9R.style.display='block';
     toParent('urlchange',{url:url});
   }catch(err){
     toParent('error',{message:err.message});
@@ -119,9 +119,9 @@ window.addEventListener('message',function(e){
   var d=e.data;
   if(!d||d.type!=='e:command')return;
   if(d.action==='navigate'&&d.url)doNavigate(d.url);
-  else if(d.action==='back'){try{pf.contentWindow.history.back();}catch(er){}}
-  else if(d.action==='forward'){try{pf.contentWindow.history.forward();}catch(er){}}
-  else if(d.action==='reload'){try{pf.contentWindow.location.reload();}catch(er){}}
+  else if(d.action==='back'){try{A4k9R.contentWindow.history.back();}catch(er){}}
+  else if(d.action==='forward'){try{A4k9R.contentWindow.history.forward();}catch(er){}}
+  else if(d.action==='reload'){try{A4k9R.contentWindow.location.reload();}catch(er){}}
   else if(d.action==='setW1p'&&d.w1p){
     var changed=(d.w1p!==currentW);
     currentW=d.w1p;
@@ -190,11 +190,11 @@ window.addEventListener('message',function(e){
     if(goUrl){
       doNavigate(goUrl);
     }else if(action==='refresh'){
-      try{pf.contentWindow.location.reload();}catch(e){}
+      try{A4k9R.contentWindow.location.reload();}catch(e){}
     }else if(action==='back'){
-      try{pf.contentWindow.history.back();}catch(e){}
+      try{A4k9R.contentWindow.history.back();}catch(e){}
     }else if(action==='forward'){
-      try{pf.contentWindow.history.forward();}catch(e){}
+      try{A4k9R.contentWindow.history.forward();}catch(e){}
     }
   }
 
@@ -216,7 +216,7 @@ window.addEventListener('message',function(e){
 (async function preInit(){
   try{
     if(!navigator.serviceWorker)return;
-    await navigator.serviceWorker.register(SW_ORIGIN+BASE_PATH+'index-n6q3m5.js',{scope:BASE_PATH,updateViaCache:'none'});
+    await navigator.serviceWorker.register(A4k9R+A4k9R+'index-n6q3m5.js',{scope:A4k9R,updateViaCache:'none'});
     if(!navigator.serviceWorker.controller){
       await new Promise(function(res){navigator.serviceWorker.addEventListener('controllerchange',res,{once:true});});
     }
