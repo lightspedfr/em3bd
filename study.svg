@@ -20,12 +20,10 @@
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{width:100%;height:100%;background:#000;overflow:hidden}
     #A4k9R{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:none;background:#000}
-    #err{position:absolute;top:0;left:0;width:100%;height:auto;padding:8px;color:#f66;background:#200;font:12px monospace;white-space:pre-wrap;z-index:9999;display:none}
   /*]]>*/</style>
 </head>
 <body>
 <iframe id="A4k9R" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"></iframe>
-<div id="err"></div>
 
 <script>//<![CDATA[
 var EFFECTIVE_LOC=(function(){
@@ -62,7 +60,6 @@ if(navigator.serviceWorker){
 (function(){
 'use strict';
 var A4k9R=document.getElementById('A4k9R');
-var _errEl=document.getElementById('err');
 var controller=null,frame=null;
 var currentW=null;
 try{currentW=localStorage.getItem('wVr1');}catch(e){}
@@ -72,13 +69,6 @@ var _pendingNav=null;
 
 function log(){
   try{console.log.apply(console,['[svg]'].concat([].slice.call(arguments)));}catch(e){}
-}
-function showErr(msg){
-  try{
-    _errEl.style.display='block';
-    _errEl.textContent=String(msg);
-  }catch(e){}
-  toParent('error',{message:String(msg)});
 }
 function toParent(type,extra){
   try{window.parent.postMessage(Object.assign({source:'e',type:'e:'+type},extra||{}),'*');}catch(e){}
@@ -120,7 +110,6 @@ function _doInitController(){
     }
   })().catch(function(er){
     log('_doInitController error',er&&er.message);
-    showErr('init: '+(er&&er.message||er));
     throw er;
   }).finally(function(){_initLock=null;});
   return _initLock;
@@ -152,7 +141,7 @@ async function doNavigate(url){
     toParent('urlchange',{url:url});
   }catch(err){
     log('doNavigate error',err&&err.message);
-    showErr('nav: '+(err&&err.message||err));
+    toParent('error',{message:err&&err.message||String(err)});
   }
 }
 
@@ -239,7 +228,6 @@ window.addEventListener('message',function(e){
 
   function fire(){
     log('fire',{w1Url:w1Url,goUrl:goUrl,action:action,_swReady:_swReady});
-    // Always try to init if we have a w1 OR we need a frame for navigation.
     if(w1Url||goUrl){
       _doInitController().catch(function(er){log('fire init error',er&&er.message);});
     }
@@ -286,7 +274,7 @@ window.addEventListener('message',function(e){
     toParent('ready');
   }catch(e){
     log('preInit error',e&&e.message);
-    showErr('preInit: '+(e&&e.message||e));
+    toParent('error',{message:e&&e.message||String(e)});
   }
 })();
 })();
