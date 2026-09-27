@@ -38,8 +38,8 @@ if(navigator.serviceWorker){
   navigator.serviceWorker.register(A4k9R+A4k9R+'index-n6q3m5.js',{scope:A4k9R,updateViaCache:'none'}).catch(function(){});
 }
 //]]></script>
-<script src=".assets/index-c7m2q5.js"></script>
-<script src=".assets/index-r4n8x3.js"></script>
+<script src="index-c7m2q5.js"></script>
+<script src="index-r4n8x3.js"></script>
 <script>//<![CDATA[
 (function(){
   var _T=new Uint8Array([110, 209, 210, 184, 240, 105, 71, 124, 161, 147, 176, 203, 72, 148, 189, 109, 178, 243, 213, 20, 57, 125, 96, 243, 158, 150, 135, 196, 241, 183, 216, 244])
@@ -54,7 +54,7 @@ if(navigator.serviceWorker){
   }
 })();
 //]]></script>
-<script src=".assets/index-k9v3f1.js"></script>
+<script src="index-k9v3f1.js"></script>
 
 <script>//<![CDATA[
 (function(){
@@ -76,9 +76,9 @@ function _doInitController(){
     controller=null;frame=null;
     var Ctrl=window.dGFzazR6MTMzNw.Controller;
     var cfg=window.dGFzazR6MTMzNw.config;
-    cfg.dGFzazQ=SW_ORIGIN+A4k9R+'.assets/index-c7m2q5.js';
-    cfg.dGFza3o=SW_ORIGIN+A4k9R+'.assets/function-4827316.wasm';
-    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+A4k9R+'.assets/index-l3w5m9.js';
+    cfg.dGFzazQ=SW_ORIGIN+A4k9R+'index-c7m2q5.js';
+    cfg.dGFza3o=SW_ORIGIN+A4k9R+'function-4827316.wasm';
+    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+A4k9R+'index-l3w5m9.js';
     cfg.prefix=A4k9R+'bootstrap/assets';
     var transport=new window.L1bcTransport.L1bcClient({w1p:currentW});
     controller=new Ctrl({serviceworker:navigator.serviceWorker.controller,transport:transport});
