@@ -31,11 +31,11 @@ var EFFECTIVE_LOC=(function(){
   try{if(window.parent&&window.parent!==window)return window.parent.location;}catch(e){}
   return location;
 })();
-var A4k9R=EFFECTIVE_LOC.origin;
-var A4k9R=EFFECTIVE_LOC.pathname.replace(/[^\/]*$/,'');
+var a762=EFFECTIVE_LOC.origin;
+var a764=EFFECTIVE_LOC.pathname.replace(/[^\/]*$/,'');
 
 if(navigator.serviceWorker){
-  navigator.serviceWorker.register(A4k9R+A4k9R+'index-n6q3m5.js',{scope:A4k9R,updateViaCache:'none'}).catch(function(){});
+  navigator.serviceWorker.register(a762+a764+'index-n6q3m5.js',{scope:a764,updateViaCache:'none'}).catch(function(){});
 }
 //]]></script>
 <script src="index-c7m2q5.js"></script>
@@ -76,14 +76,14 @@ function _doInitController(){
     controller=null;frame=null;
     var Ctrl=window.dGFzazR6MTMzNw.Controller;
     var cfg=window.dGFzazR6MTMzNw.config;
-    cfg.dGFzazQ=SW_ORIGIN+A4k9R+'index-c7m2q5.js';
-    cfg.dGFza3o=SW_ORIGIN+A4k9R+'function-4827316.wasm';
-    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+A4k9R+'index-l3w5m9.js';
-    cfg.prefix=A4k9R+'bootstrap/assets';
+    cfg.dGFzazQ=SW_ORIGIN+a764+'index-c7m2q5.js';
+    cfg.dGFza3o=SW_ORIGIN+a764+'function-4827316.wasm';
+    cfg.ZWR1Y2F0aW9u=SW_ORIGIN+a764+'index-l3w5m9.js';
+    cfg.prefix=a764+'bootstrap/assets';
     var transport=new window.L1bcTransport.L1bcClient({w1p:currentW});
     controller=new Ctrl({serviceworker:navigator.serviceWorker.controller,transport:transport});
     await controller.wait();
-    frame=controller.createFrame(A4k9R);
+    frame=controller.createFrame(a764);
     if(!frame)throw new Error('createFrame returned null');
     var _Tap=window.$bWF0aGlp&&window.$bWF0aGlp.Tap;
     if(_Tap){
@@ -216,7 +216,7 @@ window.addEventListener('message',function(e){
 (async function preInit(){
   try{
     if(!navigator.serviceWorker)return;
-    await navigator.serviceWorker.register(A4k9R+A4k9R+'index-n6q3m5.js',{scope:A4k9R,updateViaCache:'none'});
+    await navigator.serviceWorker.register(a762+a764+'index-n6q3m5.js',{scope:a764,updateViaCache:'none'});
     if(!navigator.serviceWorker.controller){
       await new Promise(function(res){navigator.serviceWorker.addEventListener('controllerchange',res,{once:true});});
     }
